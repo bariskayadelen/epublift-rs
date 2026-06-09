@@ -53,7 +53,7 @@ To ensure broad compatibility, epublift retains legacy `toc.ncx` maps and OPF po
 
 ## 📥 Installation
 
-This utility requires the **Rust toolchain** (1.94+) and a C compiler (used to build the bundled `libwebp` encoder).
+This utility is **pure Rust** — it only requires the **Rust toolchain** (1.94+). No C compiler or system libraries needed; WebP encoding is handled by the pure-Rust [`zenwebp`](https://crates.io/crates/zenwebp) crate.
 
 ### Build from source
 
