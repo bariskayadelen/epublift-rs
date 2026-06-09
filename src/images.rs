@@ -8,7 +8,7 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 use walkdir::WalkDir;
-use webp::Encoder;
+use zenwebp::{EncodeRequest, LossyConfig, PixelLayout};
 
 /// Per-image size statistics, used by the report.
 #[derive(Debug, Clone)]
@@ -154,19 +154,19 @@ fn push_unique(pairs: &mut Vec<(String, String)>, old: String, new: String) {
 /// Decode an image from disk and write it back out as WebP at `quality` (1-100).
 fn encode_webp(src: &Path, dst: &Path, quality: u8) -> Result<()> {
     let dynimg = image::open(src)?;
-    let q = quality as f32;
+    let config = LossyConfig::new().with_quality(quality as f32);
 
     let memory = if dynimg.color().has_alpha() {
         let rgba = dynimg.to_rgba8();
         let (w, h) = (rgba.width(), rgba.height());
-        Encoder::from_rgba(&rgba, w, h).encode(q)
+        EncodeRequest::lossy(&config, &rgba, PixelLayout::Rgba8, w, h).encode()?
     } else {
         let rgb = dynimg.to_rgb8();
         let (w, h) = (rgb.width(), rgb.height());
-        Encoder::from_rgb(&rgb, w, h).encode(q)
+        EncodeRequest::lossy(&config, &rgb, PixelLayout::Rgb8, w, h).encode()?
     };
 
-    fs::write(dst, &*memory)?;
+    fs::write(dst, &memory)?;
     Ok(())
 }
 
