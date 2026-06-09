@@ -7,7 +7,7 @@
 use anyhow::{Context, Result};
 use quick_xml::events::{BytesEnd, BytesStart, BytesText, Event};
 use quick_xml::name::QName;
-use quick_xml::{Reader, Writer};
+use quick_xml::{Reader, Writer, XmlVersion};
 use std::collections::{HashMap, HashSet};
 
 const NS_DC: &str = "http://purl.org/dc/elements/1.1/";
@@ -70,7 +70,7 @@ fn get_attr(e: &BytesStart, key: &str) -> Option<String> {
     for a in e.attributes().flatten() {
         if a.key.as_ref() == key.as_bytes() {
             return Some(
-                a.unescape_value()
+                a.normalized_value(XmlVersion::Implicit1_0)
                     .map(|c| c.into_owned())
                     .unwrap_or_else(|_| String::from_utf8_lossy(&a.value).into_owned()),
             );
@@ -185,7 +185,7 @@ fn transform_start(
         let key = String::from_utf8_lossy(a.key.as_ref()).into_owned();
         present.insert(key.clone());
         let value = a
-            .unescape_value()
+            .normalized_value(XmlVersion::Implicit1_0)
             .map(|c| c.into_owned())
             .unwrap_or_else(|_| String::from_utf8_lossy(&a.value).into_owned());
         let value = overrides

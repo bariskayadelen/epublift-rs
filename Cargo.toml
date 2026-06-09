@@ -17,11 +17,11 @@ path = "src/bin/gen_sample.rs"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }
-zip = { version = "2", default-features = false, features = ["deflate"] }
+zip = { version = "8", default-features = false, features = ["deflate"] }
 image = { version = "0.25", default-features = false, features = ["jpeg", "png"] }
 zenwebp = "0.4"
-quick-xml = "0.37"
-roxmltree = "0.20"
+quick-xml = "0.40"
+roxmltree = "0.21"
 regex = "1"
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
 tempfile = "3"
