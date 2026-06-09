@@ -19,7 +19,7 @@ path = "src/bin/gen_sample.rs"
 clap = { version = "4", features = ["derive"] }
 zip = { version = "2", default-features = false, features = ["deflate"] }
 image = { version = "0.25", default-features = false, features = ["jpeg", "png"] }
-webp = "0.3"
+zenwebp = "0.4"
 quick-xml = "0.37"
 roxmltree = "0.20"
 regex = "1"
